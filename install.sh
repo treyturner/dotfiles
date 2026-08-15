@@ -25,6 +25,30 @@ link_file() {
   printf 'Linked %s -> %s\n' "$target_path" "$source_path"
 }
 
+prefer_user_local_bin() {
+  local shell_config="$1"
+  local marker="# treyturner/dotfiles: prefer user-local executables"
+
+  if [[ -f "$shell_config" ]] && grep -Fqx -- "$marker" "$shell_config"; then
+    return
+  fi
+
+  printf '\n%s\n%s\n' \
+    "$marker" \
+    'export PATH="$HOME/.local/bin:$PATH"' >> "$shell_config"
+  printf 'Updated PATH precedence in %s\n' "$shell_config"
+}
+
 link_file ".bash_aliases"
 link_file ".gitconfig"
 link_file ".local/bin/gh"
+
+prefer_user_local_bin "$HOME/.bashrc"
+
+if [[ -e "$HOME/.bash_profile" ]]; then
+  prefer_user_local_bin "$HOME/.bash_profile"
+elif [[ -e "$HOME/.bash_login" ]]; then
+  prefer_user_local_bin "$HOME/.bash_login"
+else
+  prefer_user_local_bin "$HOME/.profile"
+fi
