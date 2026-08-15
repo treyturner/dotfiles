@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+find_github_cli() {
+  local candidate
+  local path_entry
+  local -a path_entries
+
+  IFS=: read -r -a path_entries <<< "${PATH-}"
+
+  for path_entry in "${path_entries[@]}"; do
+    [[ -n "$path_entry" ]] || path_entry="."
+    candidate="$path_entry/gh"
+
+    if [[ -x "$candidate" && ! -d "$candidate" ]] &&
+       ! [[ "$candidate" -ef "${BASH_SOURCE[0]}" ]]; then
+      printf '%s\n' "$candidate"
+      return
+    fi
+  done
+
+  return 1
+}
+
+if ! gh_bin="$(find_github_cli)"; then
+  printf '%s\n' 'Unable to find a GitHub CLI executable outside the authentication wrapper.' >&2
+  exit 127
+fi
+
+if ! token="$(coder external-auth access-token treyturner-github)"; then
+  printf '%s\n' "$token" >&2
+  exit 1
+fi
+
+export GH_TOKEN="$token"
+exec "$gh_bin" "$@"
