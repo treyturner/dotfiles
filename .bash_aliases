@@ -8,7 +8,7 @@ alias gl='git log --oneline --decorate --graph -20'
 gh() {
   local token
 
-  if ! token="$(coder external-auth access-token github)"; then
+  if ! token="$(coder external-auth access-token treyturner-github)"; then
     printf '%s\n' "$token" >&2
     return 1
   fi
