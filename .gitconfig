@@ -1,0 +1,18 @@
+[user]
+  name = Trey Turner
+  email = treyturner@users.noreply.github.com
+
+[init]
+  defaultBranch = main
+
+[push]
+  autoSetupRemote = true
+
+[fetch]
+  prune = true
+
+[rerere]
+  enabled = true
+
+[diff]
+  colorMoved = default
