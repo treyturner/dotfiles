@@ -27,3 +27,4 @@ link_file() {
 
 link_file ".bash_aliases"
 link_file ".gitconfig"
+link_file ".local/bin/gh"

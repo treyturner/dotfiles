@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+if ! token="$(coder external-auth access-token treyturner-github)"; then
+  printf '%s\n' "$token" >&2
+  exit 1
+fi
+
+exec env GH_TOKEN="$token" /usr/bin/gh "$@"
