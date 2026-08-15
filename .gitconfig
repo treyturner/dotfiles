@@ -1,6 +1,7 @@
 [user]
   name = Trey Turner
   email = treyturner@users.noreply.github.com
+  useConfigOnly = true
 
 [init]
   defaultBranch = main
