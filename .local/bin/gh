@@ -32,4 +32,5 @@ if ! token="$(coder external-auth access-token treyturner-github)"; then
   exit 1
 fi
 
-exec env GH_TOKEN="$token" "$gh_bin" "$@"
+export GH_TOKEN="$token"
+exec "$gh_bin" "$@"
